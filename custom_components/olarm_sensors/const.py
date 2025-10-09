@@ -1,7 +1,7 @@
 """Module that stores all the constants for the integration."""
 import logging
 
-from homeassistant.components.binary_sensor import BinarySensorDeviceClass
+from homeassistant.components.alarm_control_panel import AlarmControlPanelState
 from homeassistant.const import (
     STATE_ALARM_ARMED_AWAY,
     STATE_ALARM_ARMED_HOME,
@@ -24,21 +24,22 @@ OLARM_DEVICE_NAMES = "olarm_device_names"
 OLARM_DEVICES = "olarm_devices"
 OLARM_DEVICE_AMOUNT = "olarm_device_amount"
 OLARM_STATE_TO_HA = {
-    "disarm": STATE_ALARM_DISARMED,
-    "notready": STATE_ALARM_DISARMED,
-    "countdown": STATE_ALARM_ARMING,
-    "sleep": STATE_ALARM_ARMED_NIGHT,
-    "stay": STATE_ALARM_ARMED_HOME,
-    "arm": STATE_ALARM_ARMED_AWAY,
-    "alarm": STATE_ALARM_TRIGGERED,
-    "fire": STATE_ALARM_TRIGGERED,
-    "emergency": STATE_ALARM_TRIGGERED,
+    "disarm":    AlarmControlPanelState.DISARMED,
+    "notready":  AlarmControlPanelState.DISARMED,
+    "countdown": AlarmControlPanelState.ARMING,
+    "sleep":     AlarmControlPanelState.ARMED_NIGHT,
+    "stay":      AlarmControlPanelState.ARMED_HOME,
+    "arm":       AlarmControlPanelState.ARMED_AWAY,
+    "alarm":     AlarmControlPanelState.TRIGGERED,
+    "fire":      AlarmControlPanelState.TRIGGERED,
+    "emergency": AlarmControlPanelState.TRIGGERED,
 }
+
 OLARM_CHANGE_TO_HA = {
-    "area-disarm": STATE_ALARM_DISARMED,
-    "area-stay": STATE_ALARM_ARMED_HOME,
-    "area-sleep": STATE_ALARM_ARMED_NIGHT,
-    "area-arm": STATE_ALARM_ARMED_AWAY,
+    "area-disarm": AlarmControlPanelState.DISARMED,
+    "area-stay":   AlarmControlPanelState.ARMED_HOME,
+    "area-sleep":  AlarmControlPanelState.ARMED_NIGHT,
+    "area-arm":    AlarmControlPanelState.ARMED_AWAY,
     None: None,
     "null": None,
 }
