@@ -251,6 +251,7 @@ class OlarmAlarm(CoordinatorEntity, AlarmControlPanelEntity):
         """Send the stay command to the api."""
         if self.check_code(code):
             self._attr_alarm_state = AlarmControlPanelState.ARMING
+            self.async_write_ha_state()
             LOGGER.info(
                 "Area '%s' on Olarm device (%s) has been set to armed_home (stay)",
                 self.sensor_name,
@@ -271,6 +272,7 @@ class OlarmAlarm(CoordinatorEntity, AlarmControlPanelEntity):
         """Send the arm command to the api."""
         if self.check_code(code):
             self._attr_alarm_state = AlarmControlPanelState.ARMING
+            self.async_write_ha_state()
             LOGGER.info(
                 "Area '%s' on Olarm device (%s) has been set to armed_away (armed)",
                 self.sensor_name,
