@@ -27,7 +27,6 @@ from .const import (
     DOMAIN,
     LOGGER,
     OLARM_STATE_TO_HA,
-    STATE_ALARM_ARMING,
     VERSION,
 )
 from .coordinator import OlarmCoordinator
@@ -291,7 +290,8 @@ class OlarmAlarm(CoordinatorEntity, AlarmControlPanelEntity):
     async def async_alarm_arm_night(self, code: str | None = None) -> None:
         """Send the sleep command to the api."""
         if self.check_code(code):
-            self._state = STATE_ALARM_ARMING
+            self._attr_alarm_state = AlarmControlPanelState.ARMING
+            self.async_write_ha_state()
             LOGGER.info(
                 "Area '%s' on Olarm device (%s) has been set to armed_night (sleep)",
                 self.sensor_name,
@@ -323,7 +323,7 @@ class OlarmAlarm(CoordinatorEntity, AlarmControlPanelEntity):
 
         # Setting the state.
         try:
-            self._state = OLARM_STATE_TO_HA.get(
+            self._attr_alarm_state = OLARM_STATE_TO_HA.get(
                 self.coordinator.panel_state[self.area - 1]["state"]
             )
         except ListIndexError:
@@ -363,7 +363,7 @@ class OlarmAlarm(CoordinatorEntity, AlarmControlPanelEntity):
         """Update the state of the alarm panel from the coordinator."""
         # Setting the state.
         try:
-            self._state = OLARM_STATE_TO_HA.get(
+            self._attr_alarm_state = OLARM_STATE_TO_HA.get(
                 self.coordinator.panel_state[self.area - 1]["state"]
             )
         except ListIndexError:
