@@ -187,15 +187,15 @@ class OlarmSensorsConfigFlow(ConfigFlow, domain=DOMAIN):
     @callback
     def async_get_options_flow(config_entry: ConfigEntry) -> OptionsFlow:
         """Create the options flow."""
-        return OlarmOptionsFlow(config_entry)
+        return OlarmOptionsFlow()
 
 
 class OlarmOptionsFlow(OptionsFlow):
     """Options for Olarm config."""
 
-    def __init__(self, config_entry: ConfigEntry) -> None:
+    def __init__(self) -> None:
         """Initialize options flow."""
-        self.config_entry = config_entry
+
 
     def _get_schema(self):
         """Return the data schema for the options form."""
