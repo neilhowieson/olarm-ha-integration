@@ -10,7 +10,11 @@ from aiohttp.client_exceptions import ContentTypeError
 from homeassistant.const import CONF_SCAN_INTERVAL
 from homeassistant.core import ServiceCall
 
-from .const import GITHUB_TOKEN, LOGGER, VERSION
+from .const import LOGGER, VERSION  # GITHUB_TOKEN is optional
+try:
+    from .const import GITHUB_TOKEN  # may not exist in forks; that's OK
+except Exception:
+    GITHUB_TOKEN = ""
 from .exceptions import (
     APIClientConnectorError,
     APIContentTypeError,
