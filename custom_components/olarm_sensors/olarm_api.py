@@ -730,9 +730,7 @@ class OlarmUpdateAPI:
         self.url: str = "https://api.github.com/repos/rainepretorius/olarm-ha-integration/releases/latest"
 
         # Set up headers with your personal access token for authentication
-        self.headers: dict = {
-            "Authorization": f"token {GITHUB_TOKEN}",
-        }
+        self.headers: dict = {"Authorization": f"token {GITHUB_TOKEN}"} if GITHUB_TOKEN else {}
         self.release_data: dict = {
             "name": f"Version {VERSION}",
             "body": "",
