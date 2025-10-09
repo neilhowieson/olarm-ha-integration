@@ -11,6 +11,7 @@ from homeassistant.components.alarm_control_panel import (
     AlarmControlPanelEntity,
     CodeFormat,
     const,
+    AlarmControlPanelState,
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_SCAN_INTERVAL
@@ -95,7 +96,7 @@ class OlarmAlarm(CoordinatorEntity, AlarmControlPanelEntity):
             coordinator.olarm_device_name,
         )
         super().__init__(coordinator)
-        self._state = OLARM_STATE_TO_HA.get(state)
+        self._attr_alarm_state = OLARM_STATE_TO_HA.get(state)
         self.sensor_name = sensor_name
         self.area = area
         self.format = None
@@ -155,9 +156,10 @@ class OlarmAlarm(CoordinatorEntity, AlarmControlPanelEntity):
         )
 
     @property
-    def state(self) -> str | None:
-        """Return the state of the entity."""
-        return self._state
+    def alarm_state(self) -> AlarmControlPanelState | None:
+        """Return the state using the new enum-based property."""
+        return getattr(self, "_attr_alarm_state", None)
+
 
     @property
     def supported_features(self) -> const.AlarmControlPanelEntityFeature:
@@ -249,7 +251,7 @@ class OlarmAlarm(CoordinatorEntity, AlarmControlPanelEntity):
     async def async_alarm_arm_home(self, code: str | None = None) -> None:
         """Send the stay command to the api."""
         if self.check_code(code):
-            self._state = STATE_ALARM_ARMING
+            self._attr_alarm_state = AlarmControlPanelState.ARMING
             LOGGER.info(
                 "Area '%s' on Olarm device (%s) has been set to armed_home (stay)",
                 self.sensor_name,
@@ -269,7 +271,7 @@ class OlarmAlarm(CoordinatorEntity, AlarmControlPanelEntity):
     async def async_alarm_arm_away(self, code: str | None = None) -> None:
         """Send the arm command to the api."""
         if self.check_code(code):
-            self._state = STATE_ALARM_ARMING
+            self._attr_alarm_state = AlarmControlPanelState.ARMING
             LOGGER.info(
                 "Area '%s' on Olarm device (%s) has been set to armed_away (armed)",
                 self.sensor_name,
