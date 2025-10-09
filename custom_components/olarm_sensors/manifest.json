@@ -8,6 +8,6 @@
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/rainepretorius/olarm-ha-integration/issues",
   "quality_scale": "silver",
-  "requirements": ["olarm-api-rainepretorius", "aiohttp"],
+  "requirements": ["aiohttp"],
   "version": "2.3.1"
 }
