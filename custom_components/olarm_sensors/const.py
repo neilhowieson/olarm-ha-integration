@@ -1,21 +1,16 @@
 """Module that stores all the constants for the integration."""
+from __future__ import annotations
+
 import logging
 
 from homeassistant.components.alarm_control_panel import AlarmControlPanelState
-from homeassistant.const import (
-    STATE_ALARM_ARMED_AWAY,
-    STATE_ALARM_ARMED_HOME,
-    STATE_ALARM_ARMED_NIGHT,
-    STATE_ALARM_ARMING,
-    STATE_ALARM_DISARMED,
-    STATE_ALARM_TRIGGERED,
-)
+from homeassistant.components.binary_sensor import BinarySensorDeviceClass
 
 VERSION = "2.3.3"
-
 LOGGER = logging.getLogger(__package__)
 
 DOMAIN = "olarm_sensors"
+
 AUTHENTICATION_ERROR = "invalid_credentials"
 CONF_DEVICE_FIRMWARE = "olarm_device_firmware"
 CONF_ALARM_CODE = "olarm_arm_code"
@@ -23,6 +18,8 @@ CONF_OLARM_DEVICES = "selected_olarm_devices"
 OLARM_DEVICE_NAMES = "olarm_device_names"
 OLARM_DEVICES = "olarm_devices"
 OLARM_DEVICE_AMOUNT = "olarm_device_amount"
+
+# Olarm -> HA alarm state mapping (new enum-based)
 OLARM_STATE_TO_HA = {
     "disarm":    AlarmControlPanelState.DISARMED,
     "notready":  AlarmControlPanelState.DISARMED,
@@ -35,6 +32,7 @@ OLARM_STATE_TO_HA = {
     "emergency": AlarmControlPanelState.TRIGGERED,
 }
 
+# Action change -> HA alarm state mapping (new enum-based)
 OLARM_CHANGE_TO_HA = {
     "area-disarm": AlarmControlPanelState.DISARMED,
     "area-stay":   AlarmControlPanelState.ARMED_HOME,
@@ -43,50 +41,42 @@ OLARM_CHANGE_TO_HA = {
     None: None,
     "null": None,
 }
+
+# Zone type -> BinarySensor device class mapping
 OLARM_ZONE_TYPE_TO_HA = {
-    "": BinarySensorDeviceClass.MOTION,
-    0: BinarySensorDeviceClass.MOTION,
-    10: BinarySensorDeviceClass.DOOR,
-    11: BinarySensorDeviceClass.WINDOW,
-    20: BinarySensorDeviceClass.MOTION,
-    21: BinarySensorDeviceClass.MOTION,
-    90: BinarySensorDeviceClass.PROBLEM,
-    50: BinarySensorDeviceClass.SAFETY,
-    51: BinarySensorDeviceClass.SAFETY,
-    1000: BinarySensorDeviceClass.PLUG,
-    1001: BinarySensorDeviceClass.POWER,
+    "":    BinarySensorDeviceClass.MOTION,
+    0:     BinarySensorDeviceClass.MOTION,
+    10:    BinarySensorDeviceClass.DOOR,
+    11:    BinarySensorDeviceClass.WINDOW,
+    20:    BinarySensorDeviceClass.MOTION,
+    21:    BinarySensorDeviceClass.MOTION,
+    90:    BinarySensorDeviceClass.PROBLEM,
+    50:    BinarySensorDeviceClass.SAFETY,
+    51:    BinarySensorDeviceClass.SAFETY,
+    1000:  BinarySensorDeviceClass.PLUG,
+    1001:  BinarySensorDeviceClass.POWER,
 }
 
-GITHUB_TOKEN = "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"
-
-
 class TempEntry:
-    """DOCSTRING: Representation of the area number."""
-
+    """Representation of a temporary config entry."""
     scan_interval: int = 10
     api_key: str = ""
 
     def __init__(self, scan_interval: int, api_key: str) -> None:
-        """Set up the representation of a config entry."""
         self.scan_interval = scan_interval
         self.api_key = api_key
 
     @property
-    def data(self):
-        """Returns the zone number for the api."""
+    def data(self) -> dict:
         return {"scan_interval": self.scan_interval, "api_key": self.api_key}
 
-
 class BypassZone:
-    """DOCSTRING: Representation of the area number."""
-
+    """Representation of a bypassed zone."""
     zone: int = 0
 
     def __init__(self, zone: int) -> None:
-        """Representation of the area number."""
         self.zone = zone
 
     @property
-    def data(self):
-        """Returns the zone number for the api."""
+    def data(self) -> dict:
         return {"zone_num": self.zone}
